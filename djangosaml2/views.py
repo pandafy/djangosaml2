@@ -258,6 +258,13 @@ class LoginView(SPConfigMixin, View):
                                                '_sp_digest_algorithm',
                                                saml2.xmldsig.DIGEST_SHA256
             )
+        csc = getattr(settings, 'SAML_CONFIG', {}).get(
+                'service',
+                {}
+            ).get('sp', None)
+        if csc:
+            sso_kwargs['requested_authn_context'] = csc.get('requested_authn_context', None)
+
         # pysaml needs a string otherwise: "cannot serialize True (type bool)"
         if getattr(conf, '_sp_force_authn', False):
             sso_kwargs['force_authn'] = "true"
