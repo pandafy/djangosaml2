@@ -264,6 +264,8 @@ class LoginView(SPConfigMixin, View):
             ).get('sp', None)
         if csc:
             sso_kwargs['requested_authn_context'] = csc.get('requested_authn_context', None)
+            sso_kwargs['isPassive'] = csc.get('isPassive', False)
+            sso_kwargs['attribute_consuming_service_index'] = csc.get('attribute_consuming_service_index', '1')
 
         # pysaml needs a string otherwise: "cannot serialize True (type bool)"
         if getattr(conf, '_sp_force_authn', False):
